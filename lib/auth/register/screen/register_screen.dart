@@ -69,10 +69,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                 ),
-                // email input
+                // name input
                 FormFieldClass(
                   controller: nameController,
                   hittile: "enter your name",
+                  validator: (value) =>
+                      value!.isEmpty ? 'Name cannot be blank' : null,
                 ),
                 // 2
                 // Email Title
@@ -94,6 +96,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 FormFieldClass(
                   controller: emailController,
                   hittile: "enter your email",
+                  validator: (value) =>
+                      value!.isEmpty ? 'Email cannot be blank' : null,
                 ),
                 // 3
                 Padding(
@@ -114,7 +118,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 TextFormField(
                   // controller]
                   controller: passwordController,
-
+                  validator: (value) =>
+                      value!.isEmpty ? 'Passowrd cannot be blank' : null,
                   // Style
                   decoration: InputDecoration(
                     hintStyle: TextStyle(color: Colors.blue.shade200),
@@ -181,7 +186,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 TextFormField(
                   // controller]
                   controller: passwordConfirmController,
-
+                  validator: (value) =>
+                      value!.isEmpty ? 'This input cannot be blank' : null,
                   // Style
                   decoration: InputDecoration(
                     hintStyle: TextStyle(color: Colors.blue.shade200),
@@ -251,6 +257,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   controller: phoneController,
                   hittile: "enter your phone number",
                   keyboardType: TextInputType.phone,
+                  validator: (value) =>
+                      value!.isEmpty ? 'Phone cannot be blank' : null,
                 ),
 
                 SizedBox(height: 50),
@@ -265,6 +273,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       await prefs.setString(
                           'token', state.registerResponse.data.accessToken);
                       // show Dialog success
+                      // ignore: use_build_context_synchronously
                       successAwsome(context).show();
                     } else if (state is RegisterFailure) {
                       awosmedialogerror(context, state.message).show();
@@ -283,14 +292,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         onPressed: isLoading
                             ? null
                             : () {
-                                context.read<RegisterBloc>().add(
-                                    RegisterUserEvent(
-                                        name: nameController.text,
-                                        email: emailController.text,
-                                        password: passwordController.text,
-                                        confirmPassword:
-                                            passwordConfirmController.text,
-                                        phone: phoneController.text));
+                                if (formKey.currentState!.validate()) {
+                                  context.read<RegisterBloc>().add(
+                                      RegisterUserEvent(
+                                          name: nameController.text,
+                                          email: emailController.text,
+                                          password: passwordController.text,
+                                          confirmPassword:
+                                              passwordConfirmController.text,
+                                          phone: phoneController.text));
+                                }
                               },
                         child: isLoading
                             ? CircularProgressIndicator(

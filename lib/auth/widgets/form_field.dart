@@ -21,6 +21,7 @@ class FormFieldClass extends StatelessWidget {
       controller: controller,
       // hint
       validator: validator,
+      
       keyboardType: keyboardType,
       // Style
       decoration: InputDecoration(

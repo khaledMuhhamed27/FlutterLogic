@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_logic/auth/login/bloc/login_bloc.dart';
+import 'package:flutter_logic/auth/login/repository/login_repo.dart';
 import 'package:flutter_logic/auth/login/screen/login_screen.dart';
+import 'package:flutter_logic/auth/login/service/login_service.dart';
 import 'package:flutter_logic/auth/register/bloc/register_bloc.dart';
 import 'package:flutter_logic/auth/register/repository/register_repo.dart';
 import 'package:flutter_logic/auth/register/service/register_service.dart';
@@ -17,6 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        // register
         BlocProvider(
           create: (context) => RegisterBloc(
             registerRepo: RegisterRepo(
@@ -24,6 +28,14 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
+        // login
+        BlocProvider(
+          create: (context) => LoginBloc(
+            loginRepo: LoginRepo(
+              loginService: LoginService(),
+            ),
+          ),
+        )
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
